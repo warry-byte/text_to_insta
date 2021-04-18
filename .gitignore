@@ -3,8 +3,3 @@
 *.REMOVE_ME
 *.png
 *.pyc
-src/test_insta.py
-data/connection_data.xml
-*.txt
-*.log
-src/config/quedescentimetres_uuid_and_cookie.json
