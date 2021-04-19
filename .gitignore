@@ -3,3 +3,7 @@
 *.REMOVE_ME
 *.png
 *.pyc
+*.txt
+*.log
+*.json
+data/connection_data.xml
