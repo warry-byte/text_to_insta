@@ -26,7 +26,7 @@ def remove_pop_up_windows():
     
 
 username = 'quedescentimetres' #your username
-password = keyring.get_password("instgram", username)
+password = keyring.get_password("instagram", username)
 image_path = r"C:\git-repos\text_to_insta\fig\black303.jpg"
 dir_path = r"C:\git-repos\text_to_insta\fig"
 caption = "testamere"
