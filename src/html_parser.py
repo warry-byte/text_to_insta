@@ -92,14 +92,12 @@ def remove_quote_caca(quote):
     return output_quote
     
 def write_dict_to_file(quote_dict, filename):
-    with open(filename, 'w+') as f:
-        # json.dump(quote_dict, f, ensure_ascii=False)
-        json.dump(quote_dict, f)
+    with open(filename, "w", encoding='utf-8') as f:
+        json.dump(quote_dict, f, ensure_ascii=False)
 
     
 def read_dict_from_file(filename):
-    with open(filename, 'r') as f:
-        file_txt = f.read()
-        output_dict = json.loads(file_txt)
+    with open(filename, "r", encoding='utf-8') as f:
+        output_dict = json.load(f)
         
     return output_dict
