@@ -5,7 +5,6 @@ import argparse
 
 #%% Connection data (to be modified)
 username = 'quedescentimetres' #your username
-password = 'Mb(I)p7C2MdP!TdQm!' #your password 
 
 
 #%% Define paths and filenames
