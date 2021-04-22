@@ -41,6 +41,7 @@ def str_to_list(txt):
         out_list.append(s)
         
     out_list = flatten(out_list)
+    out_list = [a for a in out_list if a != ''] # remove empty list items
     
     return out_list
 
@@ -62,14 +63,11 @@ def convert_date_text(date_txt):
 def cleanup_str_list(str_list):
     # Expected format: 
     # ['Ça commence par un front, et ça termine par un cul.                    — ',
-    # '',
     # ' January 5th, 2014 11:01am ',
     # 'salace',
     # 'boucle infinie',
-    # '',
-    # '',
-    # '',
-    # '']
+    # Note: no empty string!
+
     quote = remove_quote_caca(str_list[0])
     date_txt = convert_date_text(str_list[1])
     # get words in subsequent fields
@@ -94,12 +92,14 @@ def remove_quote_caca(quote):
     return output_quote
     
 def write_dict_to_file(quote_dict, filename):
-    with open(filename,'w+', encoding='utf16') as f:
-        json.dump(quote_dict, f, ensure_ascii=False)
+    with open(filename, 'w+') as f:
+        # json.dump(quote_dict, f, ensure_ascii=False)
+        json.dump(quote_dict, f)
 
     
-def read_list_from_file(filename):
-    with open(filename, 'r', encoding='utf16') as json_file:
-        output_dict = json.load(json_file)
+def read_dict_from_file(filename):
+    with open(filename, 'r') as f:
+        file_txt = f.read()
+        output_dict = json.loads(file_txt)
         
     return output_dict

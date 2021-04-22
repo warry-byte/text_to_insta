@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 from pathlib import Path
 
 def convert_tumblr_quote_write_to_json(quote_file_path):
-    with open(quote_file_path, 'r', encoding='utf16') as html_file:
+    with open(quote_file_path, 'r') as html_file:
         html_content = html_file.read()
     
     soup = BeautifulSoup(html_content, features="lxml")
@@ -24,16 +24,16 @@ current_path = Path.cwd()
 path_to_tumblr_posts = current_path.parent / "data" / "tumblr_all" / "html"
 # test_file = path_to_tumblr_posts / "110348424618.html"
 # test_file = path_to_tumblr_posts / "72327713057.html"
-test_file = path_to_tumblr_posts / "127886382393.html"
+test_file = path_to_tumblr_posts / "74832976204.html"
 
 p = Path(path_to_tumblr_posts).glob('*.html')
-# files = [x for x in p if x.is_file()]
-files = [test_file]
+files = [x for x in p if x.is_file()]
+# files = [test_file]
 
 for f in files:
     print('Converting file: ' + str(f))
     convert_tumblr_quote_write_to_json(f)
 
-# test read from file
-testdict = hp.read_list_from_file(test_file)
+#%% test read from file
+testdict = hp.read_dict_from_file( (current_path.parent / "data" / "tumblr_all" / "txt" / test_file.stem).with_suffix(".json").with_suffix(".json") )
 print(testdict)
