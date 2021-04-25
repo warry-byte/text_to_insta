@@ -69,7 +69,7 @@ def ig_connect():
     
     print("Done.")
     
-def ig_post_picture(image_path, hashtags):
+def ig_post_picture(image_path, hashtags, log_picture = True):
     
     global driver
     
@@ -110,6 +110,8 @@ def ig_post_picture(image_path, hashtags):
     for s in range(1, 6):
         remove_pop_up_windows()
         time.sleep(2)
+        
+
         
     print("Posted " + Path(image_path).stem)
 
