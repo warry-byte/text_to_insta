@@ -9,6 +9,7 @@ import time
 from selenium.webdriver.common.keys import Keys
 import keyring
 from pathlib import Path
+import insta_data_logger
 
 is_connected = False
 username = 'quedescentimetres' #your username
@@ -69,7 +70,7 @@ def ig_connect():
     
     print("Done.")
     
-def ig_post_picture(image_path, hashtags, log_picture = True):
+def ig_post_picture(image_path, hashtags):
     
     global driver
     
@@ -111,9 +112,9 @@ def ig_post_picture(image_path, hashtags, log_picture = True):
         remove_pop_up_windows()
         time.sleep(2)
         
-
-        
     print("Posted " + Path(image_path).stem)
+    
+    
 
 if __name__ == "__main__":
     # testing upload

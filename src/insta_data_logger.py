@@ -57,6 +57,8 @@ def reset_log_entries_read_logbook():
     
     with open(str(log_book), "r") as f:
         log_entries = f.readlines()
+        
+    return log_entries
 
         
 def is_log_entry(path_to_json):
@@ -72,9 +74,19 @@ def is_log_entry(path_to_json):
         reset_log_entries_read_logbook() # populate log_entries list
     
     # Check if filename is in the log_entries list
-    if any(str(path_to_json.stem) in s for s in log_entries):
+    if(string_is_in_list(str(path_to_json.stem), log_entries)):
         entry_found = True
         
+    return entry_found
+
+def string_is_in_list(_string, log_entries):
+    # Lower-level function: check if a string is contained somewhere in a list of strings
+    # Reference: https://stackoverflow.com/questions/4843158/check-if-a-python-list-item-contains-a-string-inside-another-string
+    entry_found = False
+    
+    if any(_string in s for s in log_entries):
+            entry_found = True
+            
     return entry_found
         
 if __name__ == "__main__":

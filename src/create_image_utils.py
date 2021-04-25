@@ -62,11 +62,11 @@ def create_image_from_txt(text,
         current_h += text_h # move top left corner y coordinate to the next line
         
     if(save_to_file):
-        image.save(path / filename, "PNG")
+        image.save((path / filename).with_suffix(".png"))
     else:
         image.show()
         
-    print("Created file: " + path / filename)
+    print("Created file: " + str(path / filename))
     
     return (path / filename)
     
@@ -79,4 +79,4 @@ if __name__ == "__main__":
     # create_image_from_txt("Et alors Hélène, on a encore fini en collimaçon?", 
     #                     text_font_size = 75, 
     #                     save_to_file = False)
-    print(size)
+    # print(size)
