@@ -5,7 +5,7 @@ import textwrap
 import numpy as np
 
 
-def create_image(text, 
+def create_image_from_txt(text, 
                  image_height = 1080, 
                  image_width = 1080, 
                  color = "black", 
@@ -71,10 +71,10 @@ def create_image(text,
 if __name__ == "__main__":
     
     # size = create_image("Plus je la rote, plus je l'aime!", save_to_file=False)
-    size = create_image("Plus je la rote, plus je l'aime!", 
+    size = create_image_from_txt("Plus je la rote, plus je l'aime!", 
                         text_font_size = 75, 
                         save_to_file = False)
-    size = create_image("Et alors Hélène, on a encore fini en collimaçon?", 
+    size = create_image_from_txt("Et alors Hélène, on a encore fini en collimaçon?", 
                         text_font_size = 75, 
                         save_to_file = False)
     print(size)
