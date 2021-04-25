@@ -75,6 +75,9 @@ def batch_upload(upload_files = True):
                                 os.strerror(errno.ENOENT), 
                                 path_to_fig)
             
+        if(ig_log.is_log_entry(path_to_json)):
+            raise Exception("Files already uploaded. Please prepare new files.")
+            
         # Get current quote's hashtags in corresponding json
         current_quote = hp.read_dict_from_file(path_to_json)
         
