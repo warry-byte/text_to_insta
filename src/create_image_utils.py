@@ -10,16 +10,16 @@ def create_image_from_txt(text,
                  image_width = 1080, 
                  color = "black", 
                  text_color = "white",
-                 text_font = "C:\Windows\Fonts\sylfaen.ttf",
+                 text_font_path = Path.cwd().parent / "fonts" / "sylfaen.ttf",
                  text_font_size = 72,
-                 path = Path.cwd().parent / 'fig', 
+                 path = Path.cwd().parent / "fig", 
                  filename = "test_" + datetime.now().strftime("%Y-%m-%d_%H-%M-%S") + ".png", 
                  save_to_file = True, 
                  number_of_lines = None):
     
     image = Image.new("L", (image_width, image_height), color) # "L": (8-bit pixels, black and white)
     draw = ImageDraw.Draw(image) # get drawing context
-    image_font = ImageFont.truetype(text_font, text_font_size)
+    image_font = ImageFont.truetype(str(text_font_path), text_font_size)
     
     # Calculate initial size of text
     text_w, text_h = draw.textsize(text, font = image_font)
@@ -33,7 +33,7 @@ def create_image_from_txt(text,
         if(number_of_lines > 2): # test if we can make it in two lines
             # reduce font size by 5%
             text_font_size = int(text_font_size * 0.95)
-            image_font = ImageFont.truetype(text_font, text_font_size)
+            image_font = ImageFont.truetype(str(text_font_path), text_font_size) # Necessary - cannot change the size of a font object after its creation
             # take a less restrictive reference letter width
             ref_letter_width = draw.textsize("h", font = image_font)[0]
             max_charact_per_line = np.round(image_width / ref_letter_width) # heuristic: calculate max number of char on the basis of the width of the H
@@ -65,16 +65,18 @@ def create_image_from_txt(text,
         image.save(path / filename, "PNG")
     else:
         image.show()
+        
+    print("Created file: " + path / filename)
     
-    return (text_w, text_h) # debug only
+    return (path / filename)
     
 if __name__ == "__main__":
     
     # size = create_image("Plus je la rote, plus je l'aime!", save_to_file=False)
-    size = create_image_from_txt("Plus je la rote, plus je l'aime!", 
+    create_image_from_txt("Plus je la rote, plus je l'aime!", 
                         text_font_size = 75, 
                         save_to_file = False)
-    size = create_image_from_txt("Et alors Hélène, on a encore fini en collimaçon?", 
-                        text_font_size = 75, 
-                        save_to_file = False)
+    # create_image_from_txt("Et alors Hélène, on a encore fini en collimaçon?", 
+    #                     text_font_size = 75, 
+    #                     save_to_file = False)
     print(size)
