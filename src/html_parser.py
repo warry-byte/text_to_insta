@@ -97,7 +97,7 @@ def write_dict_to_file(quote_dict, filename):
 
     
 def read_dict_from_file(filename):
-    with open(filename, "r", encoding='utf-8') as f:
+    with open(str(filename), "r", encoding='utf-8') as f:
         output_dict = json.load(f)
         
     return output_dict

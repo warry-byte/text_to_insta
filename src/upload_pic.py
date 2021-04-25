@@ -9,7 +9,7 @@ import time
 from selenium.webdriver.common.keys import Keys
 import keyring
 from pathlib import Path
-import insta_data_logger
+import insta_data_logger as ig_log
 
 is_connected = False
 username = 'quedescentimetres' #your username
@@ -19,13 +19,19 @@ driver = None
 def remove_pop_up_windows():
     # Remove pop up windows if found
     list_parasitic_webelements = []
-    current_elem = driver.find_elements_by_xpath("//button[contains(.,'Cancel')]")
-    if(len(current_elem) > 0):
-        list_parasitic_webelements.append(current_elem)
+    try:
+        current_elem = driver.find_elements_by_xpath("//button[contains(.,'Cancel')]")
+        if(len(current_elem) > 0):
+            list_parasitic_webelements.append(current_elem)
+    except:
+        pass
         
-    current_elem = driver.find_elements_by_xpath("//button[contains(.,'Not Now')]")
-    if(len(current_elem) > 0):
-        list_parasitic_webelements.append(current_elem)
+    try:
+        current_elem = driver.find_elements_by_xpath("//button[contains(.,'Not Now')]")
+        if(len(current_elem) > 0):
+            list_parasitic_webelements.append(current_elem)
+    except:
+        pass
     
     for lis in list_parasitic_webelements:
         for elem in lis:
@@ -73,6 +79,7 @@ def ig_connect():
 def ig_post_picture(image_path, hashtags):
     
     global driver
+    global is_connected
     
     if(is_connected == False):
         ig_connect()
@@ -89,7 +96,7 @@ def ig_post_picture(image_path, hashtags):
     ActionChains(driver).move_to_element( driver.find_element_by_xpath("""//*[@id="react-root"]/section/nav[2]/div/div/div[2]/div/div/div[3]""")).click().perform()
     handle = "[CLASS:#32770; TITLE:Open]"
     autoit.win_wait(handle, 3)
-    autoit.control_set_text(handle, "Edit1", image_path)
+    autoit.control_set_text(handle, "Edit1", str(image_path))
     autoit.control_click(handle, "Button1")
     
     time.sleep(2)
@@ -112,7 +119,7 @@ def ig_post_picture(image_path, hashtags):
         remove_pop_up_windows()
         time.sleep(2)
         
-    print("Posted " + Path(image_path).stem)
+    print("Posted " + Path(image_path).stem + ".json")
     
     
 
