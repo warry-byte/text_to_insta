@@ -80,7 +80,7 @@ def batch_upload(upload_files = True):
         
         # Post picture and log
         if(upload_files):
-            up.ig_post_picture(path_to_fig, current_quote["hashtags"])
+            up.ig_post_picture(path_to_fig, current_quote)
         ig_log.log_post(path_to_json)
         
     
@@ -95,5 +95,5 @@ if __name__ == "__main__":
     
     #%% Step 2: Upload all pics
     start_time = timeit.default_timer()
-    batch_upload(True)
-    print("ELapsed time: " + str(timeit.default_timer() - start_time) + " seconds")
+    batch_upload(upload_files = True)
+    print("Elapsed time: " + str(timeit.default_timer() - start_time) + " seconds")

@@ -76,7 +76,7 @@ def ig_connect():
     
     print("Done.")
     
-def ig_post_picture(image_path, hashtags):
+def ig_post_picture(image_path, quote):
     
     global driver
     global is_connected
@@ -88,8 +88,13 @@ def ig_post_picture(image_path, hashtags):
     
     # Produce caption by listing all hashtags
     caption = ""
-    for h in hashtags:
+    for h in quote["hashtags"]:
         caption += "#" + h + " "
+        
+    # Append date for captions
+    caption += "\n." * 8
+    
+    caption += "\n" + "Anonyme, " + quote["date"]
     
     driver.get('https://www.instagram.com/' + username)
     
