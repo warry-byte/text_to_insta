@@ -86,6 +86,21 @@ def batch_upload(upload_files = True):
             up.ig_post_picture(path_to_fig, current_quote)
         ig_log.log_post(path_to_json)
         
+def batch_regenerate_figs():
+    # Take the post IDs contained in the batch log book last entries, 
+    # and regenerate pics (e.g. in case of text corrections)
+    with open(str(batch_log_book), "r") as f:
+        selected_posts_id = f.read().splitlines()
+        
+    for s in selected_posts_id:
+        path_to_json = (path_to_json_folder / s).with_suffix(".json")
+        
+        current_quote = hp.read_dict_from_file(path_to_json)
+        iu.create_image_from_txt(current_quote["quote"], 
+                              text_font_size = 75, 
+                              save_to_file = True, 
+                              filename = path_to_json.stem)
+        
     
 if __name__ == "__main__":
     num_posts = 1
@@ -94,7 +109,9 @@ if __name__ == "__main__":
     # batch_flush()
     
     #%% Step 1: Prepare posts
-    # batch_prepare_posts(1)
+    # batch_prepare_posts(10)
+    
+    # batch_regenerate_figs()
     
     #%% Step 2: Upload all pics
     start_time = timeit.default_timer()

@@ -26,7 +26,7 @@ def create_image_from_txt(text,
     
     # Number of lines not provided by the user - calculate default and wrap text in multiple lines
     if(number_of_lines == None): 
-        ref_letter_width = draw.textsize("H", font = image_font)[0]
+        ref_letter_width = draw.textsize("H", font = image_font)[0] # taking letter H as reference
         max_charact_per_line = np.round(image_width / ref_letter_width) # heuristic: calculate max number of char on the basis of the width of the H
         number_of_lines = int(np.ceil(len(text) / max_charact_per_line))
         
@@ -40,9 +40,19 @@ def create_image_from_txt(text,
             number_of_lines = int(np.ceil(len(text) / max_charact_per_line)) # this will be the final number of lines
         
         # wrap text 
-        wrapped_text = textwrap.wrap(text, width=max_charact_per_line)
+        # wrapped_text = textwrap.wrap(text, 
+                                     # width=max_charact_per_line)
+        if("-" in text):
+            wrapped_text = text.split("-")
+            # Add back hyphen to subsequent strings
+            for t in range(1, len(wrapped_text)):
+                wrapped_text[t] = "-" + str(wrapped_text[t])
+                
+        else: # normal wrapping 
+            wrapped_text = textwrap.wrap(text,
+                                         width=max_charact_per_line)
         
-    else: # TODO divide the text in multiple lines with line separator in XML file
+    else: # TODO divide the text in multiple lines with line separator in json file
         pass
 
     # Initialize text coordinates
