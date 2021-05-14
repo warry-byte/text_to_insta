@@ -26,7 +26,7 @@ def create_image_from_txt(text,
     
     # Number of lines not provided by the user - calculate default and wrap text in multiple lines
     if(number_of_lines == None): 
-        ref_letter_width = draw.textsize("H", font = image_font)[0] # taking letter H as reference
+        ref_letter_width = draw.textsize("h", font = image_font)[0] # taking letter H as reference
         max_charact_per_line = np.round(image_width / ref_letter_width) # heuristic: calculate max number of char on the basis of the width of the H
         number_of_lines = int(np.ceil(len(text) / max_charact_per_line))
         

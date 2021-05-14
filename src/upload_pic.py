@@ -101,6 +101,7 @@ def ig_post_picture(image_path, quote):
     ActionChains(driver).move_to_element( driver.find_element_by_xpath("""//*[@id="react-root"]/section/nav[2]/div/div/div[2]/div/div/div[3]""")).click().perform()
     handle = "[CLASS:#32770; TITLE:Open]"
     autoit.win_wait(handle, 3)
+    time.sleep(2) # test
     autoit.control_set_text(handle, "Edit1", str(image_path))
     autoit.control_click(handle, "Button1")
     
@@ -131,7 +132,12 @@ def ig_post_picture(image_path, quote):
 if __name__ == "__main__":
     # testing upload
     image_path = r"C:\git-repos\text_to_insta\fig\black303.jpg"
-    hashtags = ["truc", "noir"]
+    hashtags = ["marty", "mcfly"]
+    quote = {
+        'quote' : "C'est pas le pied!", 
+        'hashtags' : hashtags, 
+        'date' : "21 Octobre 2015"
+        }
     
     ig_post_picture(image_path, hashtags)
     

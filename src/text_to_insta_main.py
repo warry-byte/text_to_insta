@@ -103,14 +103,15 @@ def batch_regenerate_figs():
         
     
 if __name__ == "__main__":
-    num_posts = 1
+    num_posts = 3
     # print(batch_get_new_file_list(10))
-    # batch_prepare_posts(10)
+    # batch_prepare_posts(3)
     # batch_flush()
     
     #%% Step 1: Prepare posts
-    # batch_prepare_posts(10)
+    # batch_prepare_posts(num_posts)
     
+    #%% Optional - to do if there are adjustments to pics to be made
     # batch_regenerate_figs()
     
     #%% Step 2: Upload all pics

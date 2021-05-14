@@ -1,0 +1,6 @@
+spyder-kernels
+bs4
+pillow
+numpy
+selenium
+keyring
