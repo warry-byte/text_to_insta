@@ -8,6 +8,12 @@ import insta_data_logger as ig_log
 import errno
 import os
 import timeit
+from datetime import datetime
+import dateutil.parser
+import locale
+        
+from kivy.app import App
+from kivy.uix.button import Button
 
 batch_log_book = Path.cwd().parent / "data" / "last_batch.txt"
 path_to_json_folder = (Path.cwd().parent / "data" / "tumblr_all" / "txt")
@@ -101,20 +107,58 @@ def batch_regenerate_figs():
                               save_to_file = True, 
                               filename = path_to_json.stem)
         
+def post_quote(quote, hashtags, upload_file = True):
+    filename = datetime.now().strftime("%Y-%m-%d_%H-%M-%S") + ".png"
+    date = datetime.now().strftime("%Y-%m-%d")
     
-if __name__ == "__main__":
-    num_posts = 3
-    # print(batch_get_new_file_list(10))
-    # batch_prepare_posts(3)
+    iu.create_image_from_txt(quote, 
+                            text_font_size = 75, 
+                            save_to_file = True, 
+                            filename = filename)
+    locales = ['fr']
+    loc = locales[0]
+    locale.setlocale(locale.LC_ALL, loc) # change to French
+    date_obj = dateutil.parser.parse(date) 
+    
+    output_date = date_obj.strftime("%A %d %B %Y").capitalize()
+
+    if(upload_file):
+        path = Path.cwd().parent / "fig"
+        current_quote = {
+        'quote' : quote, 
+        'hashtags' : hashtags, 
+        'date' : output_date
+        }
+        up.ig_post_picture(path / filename, current_quote)
+
+class TextToInstaApp(App):
+    def build(self):
+        return Button()
+
+    def on_press_button(self):
+        print('You pressed the button!')
+
+if __name__ == '__main__':
+    # app = TextToInstaApp()
+    # app.run()
+
+# if __name__ == "__main__":
+    # num_posts = 3
+#     # print(batch_get_new_file_list(10))
     # batch_flush()
     
-    #%% Step 1: Prepare posts
+#     #%% Step 1: Prepare posts
     # batch_prepare_posts(num_posts)
     
-    #%% Optional - to do if there are adjustments to pics to be made
+#     #%% Optional - to do if there are adjustments to pics to be made
     # batch_regenerate_figs()
     
-    #%% Step 2: Upload all pics
-    start_time = timeit.default_timer()
-    batch_upload(upload_files = True)
-    print("Elapsed time: " + str(timeit.default_timer() - start_time) + " seconds")
+#     #%% Step 2: Upload all pics
+#     start_time = timeit.default_timer()
+    # batch_upload(upload_files = True)
+#     print("Elapsed time: " + str(timeit.default_timer() - start_time) + " seconds")
+
+#%% Direct post text
+    quote = "Mbappé sait lacer ses chaussures et compter deux par deux."
+    hashtags = ["apprenti", "joueur"]
+    post_quote(quote, hashtags, upload_file = True)

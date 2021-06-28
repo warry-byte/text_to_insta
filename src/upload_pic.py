@@ -75,6 +75,19 @@ def ig_connect():
     is_connected = True
     
     print("Done.")
+
+def ig_create_caption(quote):
+    # Produce caption by listing all hashtags
+    caption = ""
+    for h in quote["hashtags"]:
+        caption += "#" + h + " "
+        
+    # Append date for captions
+    caption += "\n." * 8 # Why 8? Because.
+    
+    caption += "\n" + "Anonyme, " + quote["date"]
+    
+    return caption
     
 def ig_post_picture(image_path, quote):
     
@@ -86,15 +99,7 @@ def ig_post_picture(image_path, quote):
     else:
         remove_pop_up_windows()
     
-    # Produce caption by listing all hashtags
-    caption = ""
-    for h in quote["hashtags"]:
-        caption += "#" + h + " "
-        
-    # Append date for captions
-    caption += "\n." * 8
-    
-    caption += "\n" + "Anonyme, " + quote["date"]
+    caption = ig_create_caption(quote)
     
     driver.get('https://www.instagram.com/' + username)
     
