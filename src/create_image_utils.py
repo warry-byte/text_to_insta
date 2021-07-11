@@ -8,7 +8,7 @@ import numpy as np
 def create_image_from_txt(text, 
                  image_height = 1080, 
                  image_width = 1080, 
-                 color = "black", 
+                 background_color = "black", 
                  text_color = "white",
                  text_font_path = Path.cwd().parent / "fonts" / "sylfaen.ttf",
                  text_font_size = 75,
@@ -17,7 +17,7 @@ def create_image_from_txt(text,
                  save_to_file = True, 
                  number_of_lines = None):
     
-    image = Image.new("L", (image_width, image_height), color) # "L": (8-bit pixels, black and white)
+    image = Image.new("L", (image_width, image_height), background_color) # "L": (8-bit pixels, black and white)
     draw = ImageDraw.Draw(image) # get drawing context
     image_font = ImageFont.truetype(str(text_font_path), text_font_size)
     
@@ -67,7 +67,7 @@ def create_image_from_txt(text,
         current_w = int((image_width-current_line_width)/2)
         draw.text((current_w, current_h), 
                   wrapped_text[line], 
-                  fill="white", 
+                  fill = text_color, 
                   font = image_font)
         current_h += text_h # move top left corner y coordinate to the next line
         

@@ -107,29 +107,56 @@ def batch_regenerate_figs():
                               save_to_file = True, 
                               filename = path_to_json.stem)
         
-def post_quote(quote, hashtags, upload_file = True):
+def post_quote(quote, 
+               hashtags, 
+               upload_file = True, 
+               background_color = "white", 
+               text_color = "black",
+               date=None):
+    
+    import subprocess
+    import sys
+    
     filename = datetime.now().strftime("%Y-%m-%d_%H-%M-%S") + ".png"
-    date = datetime.now().strftime("%Y-%m-%d")
+    
+    if(date == None):
+        date = datetime.now().strftime("%Y-%m-%d") # assign present day as default quote date    
     
     iu.create_image_from_txt(quote, 
                             text_font_size = 75, 
                             save_to_file = True, 
-                            filename = filename)
-    locales = ['fr']
-    loc = locales[0]
-    locale.setlocale(locale.LC_ALL, loc) # change to French
-    date_obj = dateutil.parser.parse(date) 
+                            filename = filename, 
+                            background_color = background_color,
+                            text_color = text_color)
     
-    output_date = date_obj.strftime("%A %d %B %Y").capitalize()
-
-    if(upload_file):
-        path = Path.cwd().parent / "fig"
-        current_quote = {
-        'quote' : quote, 
-        'hashtags' : hashtags, 
-        'date' : output_date
-        }
-        up.ig_post_picture(path / filename, current_quote)
+    # Wait for user to validate the image before uploading
+    print("Is the image OK, Master? (y/n)")
+    
+    # open picture with default application
+    imageViewerFromCommandLine = {'linux':'xdg-open',
+                                  'win32':'explorer',
+                                  'darwin':'open'}[sys.platform]
+    subprocess.run([imageViewerFromCommandLine, path_to_figs / filename])
+    
+    # wait for user input
+    response = input()
+    
+    if(response == "y"):
+        locales = ['fr']
+        loc = locales[0]
+        locale.setlocale(locale.LC_ALL, loc) # change to French
+        date_obj = dateutil.parser.parse(date) 
+        
+        output_date = date_obj.strftime("%A %d %B %Y").capitalize()
+    
+        if(upload_file):
+            path = Path.cwd().parent / "fig"
+            current_quote = {
+            'quote' : quote, 
+            'hashtags' : hashtags, 
+            'date' : output_date
+            }
+            up.ig_post_picture(path / filename, current_quote)
 
 class TextToInstaApp(App):
     def build(self):
@@ -143,7 +170,7 @@ if __name__ == '__main__':
     # app.run()
 
 # if __name__ == "__main__":
-    # num_posts = 3
+    num_posts = 3
 #     # print(batch_get_new_file_list(10))
     # batch_flush()
     
@@ -159,6 +186,12 @@ if __name__ == '__main__':
 #     print("Elapsed time: " + str(timeit.default_timer() - start_time) + " seconds")
 
 #%% Direct post text
-    quote = "Mbappé sait lacer ses chaussures et compter deux par deux."
-    hashtags = ["apprenti", "joueur"]
-    post_quote(quote, hashtags, upload_file = True)
+    quote = "Arrête de penser, ça sent l'ail!"
+    hashtags = ["homme", "méditerranéen"]
+    date = "2021-07-10"
+    post_quote(quote, 
+                hashtags, 
+                upload_file = True, 
+                background_color="black", 
+                text_color="white", 
+                date = date)
