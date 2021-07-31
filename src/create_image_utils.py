@@ -17,7 +17,10 @@ def create_image_from_txt(text,
                  save_to_file = True, 
                  number_of_lines = None):
     
-    image = Image.new("L", (image_width, image_height), background_color) # "L": (8-bit pixels, black and white)
+    # image = Image.new("L", (image_width, image_height), background_color) # "L": (8-bit pixels, black and white)
+    image = Image.new(mode = "RGB", 
+                      size = (image_width, image_height), 
+                      color = background_color) # "L": (8-bit pixels, black and white)
     draw = ImageDraw.Draw(image) # get drawing context
     image_font = ImageFont.truetype(str(text_font_path), text_font_size)
     

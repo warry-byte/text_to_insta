@@ -13,7 +13,7 @@ import insta_data_logger as ig_log
 
 is_connected = False
 username = 'quedescentimetres' #your username
-chromedriverpath = r"C:\Users\sub_s\Downloads\chromedriver_win32\chromedriver.exe"
+chromedriverpath = r"C:\Users\sub_s\Downloads\chromedriver_win32_v92\chromedriver.exe"
 driver = None
 
 def remove_pop_up_windows():
@@ -41,7 +41,7 @@ def ig_connect():
     global is_connected
     global driver
     
-    print("Connecting to Instragram...")
+    print("Connecting to Instagram...")
     
     password = keyring.get_password("instagram", username)
     

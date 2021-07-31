@@ -186,12 +186,12 @@ if __name__ == '__main__':
 #     print("Elapsed time: " + str(timeit.default_timer() - start_time) + " seconds")
 
 #%% Direct post text
-    quote = "Arrête de penser, ça sent l'ail!"
-    hashtags = ["homme", "méditerranéen"]
-    date = "2021-07-10"
+    quote = "J'étais cul comme un blanc !"
+    hashtags = ["coup", "de", "soleil"]
+    date = "2021-07-18"
     post_quote(quote, 
                 hashtags, 
                 upload_file = True, 
-                background_color="black", 
-                text_color="white", 
+                background_color="white", 
+                text_color="black", 
                 date = date)
