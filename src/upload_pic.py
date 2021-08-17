@@ -70,7 +70,7 @@ def ig_connect():
     
     driver.find_element_by_xpath("//button[contains(.,'Log In')]").click()
     
-    time.sleep(2)
+    time.sleep(4)
     
     is_connected = True
     

@@ -14,8 +14,7 @@ def create_image_from_txt(text,
                  text_font_size = 75,
                  path = Path.cwd().parent / "fig", 
                  filename = "test_" + datetime.now().strftime("%Y-%m-%d_%H-%M-%S") + ".png", 
-                 save_to_file = True, 
-                 number_of_lines = None):
+                 save_to_file = True):
     
     # image = Image.new("L", (image_width, image_height), background_color) # "L": (8-bit pixels, black and white)
     image = Image.new(mode = "RGB", 
@@ -27,8 +26,8 @@ def create_image_from_txt(text,
     # Calculate initial size of text
     text_w, text_h = draw.textsize(text, font = image_font)
     
-    # Number of lines not provided by the user - calculate default and wrap text in multiple lines
-    if(number_of_lines == None): 
+    # Lines separators not provided by the user - calculate default and wrap text in multiple lines
+    if(not ("*" in text)): 
         ref_letter_width = draw.textsize("h", font = image_font)[0] # taking letter H as reference
         max_charact_per_line = np.round(image_width / ref_letter_width) # heuristic: calculate max number of char on the basis of the width of the H
         number_of_lines = int(np.ceil(len(text) / max_charact_per_line))
@@ -55,8 +54,10 @@ def create_image_from_txt(text,
             wrapped_text = textwrap.wrap(text,
                                          width=max_charact_per_line)
         
-    else: # TODO divide the text in multiple lines with line separator in json file
-        pass
+    else: 
+        if("*" in text): # using the character as a line separator
+            wrapped_text = text.split("*")
+            number_of_lines = len(wrapped_text) # recalculate the number of lines
 
     # Initialize text coordinates
     h_center = image_height / 2
