@@ -112,7 +112,8 @@ def post_quote(quote,
                upload_file = True, 
                background_color = "white", 
                text_color = "black",
-               date=None):
+               date=None,
+               split_text_on_dash = True):
     
     import subprocess
     import sys
@@ -127,7 +128,8 @@ def post_quote(quote,
                             save_to_file = True, 
                             filename = filename, 
                             background_color = background_color,
-                            text_color = text_color)
+                            text_color = text_color,
+                            split_text_on_dash = split_text_on_dash)
     
     # Wait for user to validate the image before uploading
     print("Is the image OK, Master? (y/n)")
@@ -185,13 +187,25 @@ if __name__ == '__main__':
     # batch_upload(upload_files = True)
 #     print("Elapsed time: " + str(timeit.default_timer() - start_time) + " seconds")
 
-#%% Direct post text
-    quote = "Inès sous la pompe,*Inès sous la pompe! (à lait)"
-    hashtags = ["enfant", "précoce"]
-    date = "2021-08-17"
+#%% Direct post text    
+    quote = "Le Seigneur des Naseaux."
+    hashtags = ["hyper", "nez"]
+    date = "2022-09-03"
     post_quote(quote, 
                 hashtags, 
                 upload_file = True, 
-                background_color="purple", 
+                background_color="black", 
                 text_color="white", 
-                date = date)
+                date = date, 
+                split_text_on_dash=False)
+    
+    quote = "T'avais pas Tinder en 1910!"
+    hashtags = ["rencontres", "difficiles"]
+    date = "2022-09-02"
+    post_quote(quote, 
+                hashtags, 
+                upload_file = True, 
+                background_color="black", 
+                text_color="white", 
+                date = date, 
+                split_text_on_dash=False)

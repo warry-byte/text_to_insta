@@ -13,8 +13,8 @@ import insta_data_logger as ig_log
 
 is_connected = False
 username = 'quedescentimetres' #your username
-chromedriverpath = r"C:\Users\sub_s\Downloads\chromedriver_win32_v92\chromedriver.exe"
 driver = None
+is_ready = False # will be set to true when the page is ready to accept clicks from us (new post)
 
 def remove_pop_up_windows():
     # Remove pop up windows if found
@@ -51,15 +51,22 @@ def ig_connect():
         # "userAgent": "Mozilla/5.0 (Linux; Android 4.2.1; en-us; Nexus 5 Build/JOP40D) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Mobile Safari/535.19" }
     chrome_options = Options()
     chrome_options.add_experimental_option("mobileEmulation", mobile_emulation)
+    #chrome_options.add_argument("--headless")
+    #chrome_options.add_argument("--remote-debugging-port=9515")
+    #chrome_options.binary_location = r"C:\Users\sub_s\Downloads\chromedriver_win32_v106\chromedriver.exe"
+    #driver = webdriver.Chrome(options = chrome_options, 
+    #                          executable_path = chrome_options.binary_location)
     
-    driver = webdriver.Chrome(chrome_options = chrome_options, 
-                              executable_path = chromedriverpath)
-    
+    # IF NOT WORKING AZNYMORE, FOLLOW THESE STEPS:
+    # - Download the chromedriver that corresponds to your version of Chrome: https://sites.google.com/chromium.org/driver/
+    # - Unzip 
+    # - Include the unzipped folder in your path
+    driver = webdriver.Chrome(options = chrome_options)
     driver.get('https://www.instagram.com/')
     
     time.sleep(2)
     
-    driver.find_element_by_xpath("//button[contains(.,'Accept All')]").click()
+    driver.find_element_by_xpath("//button[contains(.,'Only allow essential cookies')]").click()
     
     time.sleep(2)
     
@@ -71,6 +78,15 @@ def ig_connect():
     driver.find_element_by_xpath("//button[contains(.,'Log In')]").click()
     
     time.sleep(4)
+    
+    # Remove pop up windows    
+    button_label = "Cancel"
+    
+    wait_for_element_and_click(button_label)
+    
+    button_label = "Not Now"
+    
+    wait_for_element_and_click(button_label)
     
     is_connected = True
     
@@ -93,17 +109,30 @@ def ig_post_picture(image_path, quote):
     
     global driver
     global is_connected
+    global is_ready
     
     if(is_connected == False):
         ig_connect()
     else:
         remove_pop_up_windows()
     
+    is_ready = False # will allow to wait for the appropriate buttons inside the Wait function (is_ready is a marker that we do not wait for any button to be clicked)
+    
     caption = ig_create_caption(quote)
     
-    driver.get('https://www.instagram.com/' + username)
+    driver.get('https://www.instagram.com/' + username + "/#")
     
-    ActionChains(driver).move_to_element( driver.find_element_by_xpath("""//*[@id="react-root"]/section/nav[2]/div/div/div[2]/div/div/div[3]""")).click().perform()
+    #ActionChains(driver).move_to_element( driver.find_element_by_xpath("""//*[@id="react-root"]/section/nav[2]/div/div/div[2]/div/div/div[3]""")).click().perform()
+    #ActionChains(driver).move_to_element( driver.find_element_by_xpath("""//*[@id="react-root"]/section/nav[2]/div/div/div[2]/div/div/div[3]""")).click().perform()
+    
+    #button_label = "Post"
+    #wait_for_element_and_click(button_label)
+   
+    time.sleep(3)
+    
+    driver.find_element_by_xpath("""/html/body/div[1]/div/div/div/div[1]/div/div/div/div[1]/section/nav[2]/div/div/div/div/div/div[3]""").click()
+    driver.find_element_by_xpath("""/html/body/div[1]/div/div/div/div[1]/div/div/div/div[1]/section/nav[2]/div/div/div/div/div/div[3]/div/div[1]/div[1]/div/div/div[1]/div[1]""").click() # find element by div class on HTML page
+    
     handle = "[CLASS:#32770; TITLE:Open]"
     autoit.win_wait(handle, 3)
     time.sleep(2) # test
@@ -112,18 +141,18 @@ def ig_post_picture(image_path, quote):
     
     time.sleep(2)
     
-    driver.find_element_by_xpath("""//*[@id="react-root"]/section/div[1]/header/div/div[2]/button""").click()
+    # "Next" button
+    #driver.find_element_by_xpath("""//*[@id="react-root"]/section/div[1]/header/div/div[2]/button""").click()
+    wait_for_element_and_click("Next")
     
     time.sleep(2)
     
-    txt = driver.find_element_by_class_name('_472V_')
-    txt.send_keys('')
-    txt = driver.find_element_by_class_name('_472V_')
-    txt.send_keys(caption) # Caption to be sent with the picture
+    # Find text area "Write a caption..." (seen in HTML, 2022-10-02)    
+    txt = driver.find_element_by_xpath("//textarea[@aria-label='Write a caption...']")
+    txt.send_keys(caption)
     
     # Click on the Share button to finalize post
-    # driver.find_element_by_xpath("""//*[@id="react-root"]/section/div[1]/header/div/div[2]/button""").click()
-    driver.find_element_by_xpath("//button[contains(.,'Share')]").click()
+    wait_for_element_and_click("Share")
     
     # Just in case the buttons are open
     for s in range(1, 6):
@@ -132,7 +161,26 @@ def ig_post_picture(image_path, quote):
         
     print("Posted " + Path(image_path).stem + ".json")
     
+    is_ready = True # at the end of a post, the page is considered as ready (2022-10-02)
     
+
+def wait_for_element_and_click(button_label):
+    global driver
+    global is_ready
+    
+    if(is_ready == True): # disable check if the page is considered as ready (e.g. end of a post)
+        return
+    
+    element_found = False
+    xpath = f"//button[contains(.,'{button_label}')]"
+    
+    while(not element_found):
+        try:
+            driver.find_element_by_xpath(xpath).click()
+            element_found = True
+        except:
+            pass
+
 
 if __name__ == "__main__":
     # testing upload
@@ -144,6 +192,6 @@ if __name__ == "__main__":
         'date' : "21 Octobre 2015"
         }
     
-    ig_post_picture(image_path, hashtags)
+    ig_post_picture(image_path, quote)
     
     

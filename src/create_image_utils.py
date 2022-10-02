@@ -14,7 +14,8 @@ def create_image_from_txt(text,
                  text_font_size = 75,
                  path = Path.cwd().parent / "fig", 
                  filename = "test_" + datetime.now().strftime("%Y-%m-%d_%H-%M-%S") + ".png", 
-                 save_to_file = True):
+                 save_to_file = True, 
+                 split_text_on_dash = True):
     
     # image = Image.new("L", (image_width, image_height), background_color) # "L": (8-bit pixels, black and white)
     image = Image.new(mode = "RGB", 
@@ -44,7 +45,7 @@ def create_image_from_txt(text,
         # wrap text 
         # wrapped_text = textwrap.wrap(text, 
                                      # width=max_charact_per_line)
-        if("-" in text):
+        if(("-" in text) and (split_text_on_dash == True)):
             wrapped_text = text.split("-")
             # Add back hyphen to subsequent strings
             for t in range(1, len(wrapped_text)):
